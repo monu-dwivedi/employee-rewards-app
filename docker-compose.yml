@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+
+  # ── PostgreSQL Database ──────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: rewards-db
+    environment:
+      POSTGRES_DB: rewarddb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - rewards-network
+
+  # ── Spring Boot Backend ──────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./employee-rewards-backend
+      dockerfile: Dockerfile
+    container_name: rewards-backend
+    environment:
+      SPRING_PROFILE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/rewarddb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - rewards-network
+    restart: unless-stopped
+
+  # ── Angular Frontend ─────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./employee-rewards-frontend
+      dockerfile: Dockerfile
+    container_name: rewards-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - rewards-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  rewards-network:
+    driver: bridge

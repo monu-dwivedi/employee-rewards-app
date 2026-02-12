@@ -1,0 +1,103 @@
+<div class="dashboard-container">
+      <div class="dashboard-header">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Overview of your employee recognition program</p>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card stat-employees">
+          <div class="stat-icon"><mat-icon>people</mat-icon></div>
+          <div class="stat-info">
+            <span class="stat-value">{{ totalEmployees }}</span>
+            <span class="stat-label">Total Employees</span>
+          </div>
+        </div>
+        <div class="stat-card stat-rewards">
+          <div class="stat-icon"><mat-icon>emoji_events</mat-icon></div>
+          <div class="stat-info">
+            <span class="stat-value">{{ totalRewards }}</span>
+            <span class="stat-label">Total Rewards</span>
+          </div>
+        </div>
+        <div class="stat-card stat-points">
+          <div class="stat-icon"><mat-icon>stars</mat-icon></div>
+          <div class="stat-info">
+            <span class="stat-value">{{ totalPoints }}</span>
+            <span class="stat-label">Points Awarded</span>
+          </div>
+        </div>
+        <div class="stat-card stat-depts">
+          <div class="stat-icon"><mat-icon>business</mat-icon></div>
+          <div class="stat-info">
+            <span class="stat-value">{{ totalDepartments }}</span>
+            <span class="stat-label">Departments</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-bottom">
+        <!-- Top Employees -->
+        <mat-card class="panel">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>leaderboard</mat-icon> Top Performers
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="top-employee" *ngFor="let emp of topEmployees; let i = index">
+              <div class="rank-badge" [class]="'rank-' + (i+1)">{{ i + 1 }}</div>
+              <div class="avatar" [style.background]="getAvatarColor(emp.name)">
+                {{ emp.name.charAt(0).toUpperCase() }}
+              </div>
+              <div class="emp-info">
+                <span class="emp-name">{{ emp.name }}</span>
+                <span class="emp-dept">{{ emp.department }}</span>
+              </div>
+              <div class="emp-points">
+                <mat-icon class="points-icon">stars</mat-icon>
+                <span>{{ emp.totalPoints }} pts</span>
+              </div>
+            </div>
+            <p *ngIf="topEmployees.length === 0" class="no-data">No employees yet</p>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Recent Rewards -->
+        <mat-card class="panel">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>history</mat-icon> Recent Awards
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="recent-reward" *ngFor="let r of recentRewards">
+              <div class="reward-icon-wrap">
+                <mat-icon class="reward-icon">emoji_events</mat-icon>
+              </div>
+              <div class="reward-details">
+                <span class="reward-name">{{ r.rewardName }}</span>
+                <span class="reward-meta">{{ r.employeeName }} · {{ r.employeeDepartment }}</span>
+              </div>
+              <div class="reward-badge">
+                <mat-chip>+{{ r.points || 0 }} pts</mat-chip>
+              </div>
+            </div>
+            <p *ngIf="recentRewards.length === 0" class="no-data">No rewards yet</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <h2 class="section-title">Quick Actions</h2>
+        <div class="action-buttons">
+          <button mat-raised-button routerLink="/employees" class="action-btn action-employee">
+            <mat-icon>person_add</mat-icon> Manage Employees
+          </button>
+          <button mat-raised-button routerLink="/rewards" class="action-btn action-reward">
+            <mat-icon>card_giftcard</mat-icon> Manage Rewards
+          </button>
+        </div>
+      </div>
+    </div>

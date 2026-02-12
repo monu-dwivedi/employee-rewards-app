@@ -1,0 +1,7 @@
+.dialog-container { padding: 8px; min-width: 420px; }
+    .dialog-title { display: flex; align-items: center; gap: 10px; color: #1a1a2e; font-size: 20px; }
+    .emp-form { display: flex; flex-direction: column; gap: 4px; padding-top: 8px; }
+    .full-width { width: 100%; }
+    .cancel-btn { color: #666; }
+    .submit-btn { background: linear-gradient(135deg, #667eea, #764ba2) !important; color: white !important; border-radius: 8px !important; padding: 8px 24px !important; }
+  

@@ -1,0 +1,61 @@
+<div class="dialog-container">
+      <h2 mat-dialog-title class="dialog-title">
+        <mat-icon>emoji_events</mat-icon>
+        {{ data.reward ? 'Edit Reward' : 'Assign Reward' }}
+      </h2>
+      <mat-dialog-content>
+        <form [formGroup]="form" class="reward-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Select Employee</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <mat-select formControlName="employeeId">
+              <mat-option *ngFor="let e of employees" [value]="e.id">
+                {{ e.name }} — {{ e.department }}
+              </mat-option>
+            </mat-select>
+            <mat-error>Employee is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Reward Type</mat-label>
+            <mat-icon matPrefix>category</mat-icon>
+            <mat-select formControlName="rewardType">
+              <mat-option *ngFor="let t of rewardTypes" [value]="t">{{ t }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Reward Name</mat-label>
+            <mat-icon matPrefix>star</mat-icon>
+            <input matInput formControlName="rewardName" placeholder="e.g. Employee of the Month">
+            <mat-error>Reward name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Points</mat-label>
+            <mat-icon matPrefix>grade</mat-icon>
+            <input matInput type="number" formControlName="points" placeholder="e.g. 500">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Date Awarded</mat-label>
+            <mat-icon matPrefix>event</mat-icon>
+            <input matInput [matDatepicker]="picker" formControlName="dateAwarded" [max]="today" readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description (Optional)</mat-label>
+            <textarea matInput formControlName="description" rows="3" placeholder="Why is this award being given?"></textarea>
+          </mat-form-field>
+        </form>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close class="cancel-btn">Cancel</button>
+        <button mat-raised-button (click)="onSubmit()" [disabled]="form.invalid" class="submit-btn">
+          <mat-icon>{{ data.reward ? 'save' : 'card_giftcard' }}</mat-icon>
+          {{ data.reward ? 'Update Reward' : 'Assign Reward' }}
+        </button>
+      </mat-dialog-actions>
+    </div>

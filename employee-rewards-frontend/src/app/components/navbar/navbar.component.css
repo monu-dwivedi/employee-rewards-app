@@ -1,0 +1,57 @@
+.navbar {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 0 24px;
+      height: 64px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-icon {
+      color: #e94560;
+      font-size: 28px;
+      height: 28px;
+      width: 28px;
+    }
+    .brand-name {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #e94560, #f5a623);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links {
+      display: flex;
+      gap: 8px;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.85) !important;
+      border-radius: 8px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      transition: all 0.2s ease;
+    }
+    .nav-links a:hover {
+      background: rgba(255,255,255,0.1) !important;
+      color: white !important;
+    }
+    .nav-links a.active-link {
+      background: rgba(233, 69, 96, 0.3) !important;
+      color: #e94560 !important;
+      border: 1px solid rgba(233,69,96,0.4);
+    }
+    mat-icon { vertical-align: middle; }

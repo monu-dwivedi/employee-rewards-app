@@ -1,0 +1,40 @@
+.page-container { animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
+    .page-title { font-size: 28px; font-weight: 700; color: #1a1a2e; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+    .page-subtitle { color: #888; margin: 0; }
+    .add-btn { background: linear-gradient(135deg, #667eea, #764ba2) !important; color: white !important; border-radius: 12px !important; padding: 10px 24px !important; font-weight: 600 !important; }
+
+    .search-bar { display: flex; align-items: center; background: white; border-radius: 12px; padding: 0 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 28px; border: 2px solid transparent; transition: border 0.2s; }
+    .search-bar:focus-within { border-color: #667eea; }
+    .search-icon { color: #999; margin-right: 10px; }
+    .search-input { flex: 1; border: none; outline: none; padding: 14px 0; font-size: 15px; background: transparent; }
+
+    .loading-state { display: flex; justify-content: center; padding: 60px; }
+
+    .employee-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+    .employee-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; }
+    .employee-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,0,0,0.15); }
+
+    .card-header { height: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px 0 20px; position: relative; }
+    .avatar-large { width: 64px; height: 64px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; font-weight: 700; border: 3px solid rgba(255,255,255,0.5); backdrop-filter: blur(4px); }
+    .card-actions { display: flex; gap: 4px; }
+    .icon-btn-white { color: rgba(255,255,255,0.85) !important; }
+
+    .card-body { padding: 16px 20px 20px; }
+    .emp-name { margin: 0 0 4px; font-size: 18px; font-weight: 700; color: #1a1a2e; }
+    .emp-title { margin: 0 0 12px; color: #888; font-size: 13px; }
+    .emp-meta { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #555; }
+    .meta-icon { font-size: 15px; height: 15px; width: 15px; color: #999; }
+    .emp-stats { display: flex; align-items: center; justify-content: center; gap: 0; background: #f8f9ff; border-radius: 10px; padding: 12px; }
+    .stat { flex: 1; text-align: center; }
+    .stat-val { display: block; font-size: 22px; font-weight: 800; color: #1a1a2e; }
+    .stat-lbl { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-divider { width: 1px; height: 32px; background: #e0e0e0; }
+
+    .empty-state { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #bbb; }
+    .empty-icon { font-size: 64px; height: 64px; width: 64px; color: #ddd; display: block; margin: 0 auto 16px; }
+  

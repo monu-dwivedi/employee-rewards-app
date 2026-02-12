@@ -1,0 +1,75 @@
+<div class="page-container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title"><mat-icon>emoji_events</mat-icon> Rewards</h1>
+          <p class="page-subtitle">Track and assign employee recognitions</p>
+        </div>
+        <button mat-raised-button (click)="openAssignDialog()" class="add-btn">
+          <mat-icon>card_giftcard</mat-icon> Assign Reward
+        </button>
+      </div>
+
+      <!-- Filter Chips -->
+      <div class="filter-bar">
+        <button mat-stroked-button
+          *ngFor="let type of filterTypes"
+          (click)="setFilter(type)"
+          [class.active-filter]="activeFilter === type"
+          class="filter-chip">
+          {{ type }}
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="loading-state">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+
+      <!-- Reward Cards -->
+      <div *ngIf="!loading" class="rewards-grid">
+        <div class="reward-card" *ngFor="let r of filteredRewards">
+          <div class="reward-banner" [style.background]="getTypeGradient(r.rewardType)">
+            <mat-icon class="trophy-icon">emoji_events</mat-icon>
+            <span class="reward-type-badge">{{ r.rewardType || 'General' }}</span>
+          </div>
+          <div class="reward-body">
+            <h3 class="reward-name">{{ r.rewardName }}</h3>
+            <div class="recipient-row">
+              <div class="mini-avatar" [style.background]="getAvatarColor(r.employeeName || '')">
+                {{ (r.employeeName || 'U').charAt(0).toUpperCase() }}
+              </div>
+              <div class="recipient-info">
+                <span class="recipient-name">{{ r.employeeName }}</span>
+                <span class="recipient-dept">{{ r.employeeDepartment }}</span>
+              </div>
+            </div>
+            <div class="reward-footer">
+              <div class="reward-points">
+                <mat-icon class="pts-icon">stars</mat-icon>
+                <span>{{ r.points || 0 }} pts</span>
+              </div>
+              <div class="reward-date">
+                <mat-icon class="date-icon">event</mat-icon>
+                <span>{{ r.dateAwarded | date:'MMM d, y' }}</span>
+              </div>
+              <div class="reward-actions">
+                <button mat-icon-button (click)="openEditDialog(r)" matTooltip="Edit" class="action-btn-edit">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteReward(r)" matTooltip="Delete" class="action-btn-del">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+            <p *ngIf="r.description" class="reward-desc">{{ r.description }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="filteredRewards.length === 0" class="empty-state">
+          <mat-icon class="empty-icon">star_border</mat-icon>
+          <p>No rewards yet</p>
+          <button mat-raised-button (click)="openAssignDialog()" class="add-btn">Assign First Reward</button>
+        </div>
+      </div>
+    </div>
+  

@@ -1,0 +1,64 @@
+<div class="page-container" @fadeIn>
+      <div class="page-header">
+        <div>
+          <h1 class="page-title"><mat-icon>people</mat-icon> Employees</h1>
+          <p class="page-subtitle">Manage your team members</p>
+        </div>
+        <button mat-raised-button (click)="openAddDialog()" class="add-btn">
+          <mat-icon>person_add</mat-icon> Add Employee
+        </button>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input class="search-input" placeholder="Search employees..." (input)="onSearch($event)" />
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="loading-state">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+
+      <!-- Employee Grid -->
+      <div *ngIf="!loading" class="employee-grid">
+        <div class="employee-card" *ngFor="let emp of filteredEmployees">
+          <div class="card-header" [style.background]="getGradient(emp.name)">
+            <div class="avatar-large">{{ emp.name.charAt(0).toUpperCase() }}</div>
+            <div class="card-actions">
+              <button mat-icon-button (click)="openEditDialog(emp)" matTooltip="Edit" class="icon-btn-white">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteEmployee(emp)" matTooltip="Delete" class="icon-btn-white">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="emp-name">{{ emp.name }}</h3>
+            <p class="emp-title">{{ emp.jobTitle || 'Team Member' }}</p>
+            <div class="emp-meta">
+              <span class="meta-item"><mat-icon class="meta-icon">business</mat-icon>{{ emp.department }}</span>
+              <span class="meta-item"><mat-icon class="meta-icon">email</mat-icon>{{ emp.email }}</span>
+            </div>
+            <div class="emp-stats">
+              <div class="stat">
+                <span class="stat-val">{{ emp.rewardCount || 0 }}</span>
+                <span class="stat-lbl">Awards</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat">
+                <span class="stat-val">{{ emp.totalPoints || 0 }}</span>
+                <span class="stat-lbl">Points</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="filteredEmployees.length === 0" class="empty-state">
+          <mat-icon class="empty-icon">person_off</mat-icon>
+          <p>No employees found</p>
+          <button mat-raised-button (click)="openAddDialog()" class="add-btn">Add First Employee</button>
+        </div>
+      </div>
+    </div>
