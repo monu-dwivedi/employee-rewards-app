@@ -2,7 +2,7 @@
       <div class="page-header">
         <div>
           <h1 class="page-title"><mat-icon>people</mat-icon> Employees</h1>
-          <p class="page-subtitle">Manage your team members</p>
+          <p class="page-subtitle">Manage team members</p>
         </div>
         <button mat-raised-button (click)="openAddDialog()" class="add-btn">
           <mat-icon>person_add</mat-icon> Add Employee
@@ -43,8 +43,15 @@
             </div>
             <div class="emp-stats">
               <div class="stat">
-                <span class="stat-val">{{ emp.rewardCount || 0 }}</span>
-                <span class="stat-lbl">Awards</span>
+                <button
+                  class="reward-link"
+                  [disabled]="(emp.rewardCount || 0) === 0"
+                  (click)="openRewardsDialog(emp)"
+                  matTooltip="{{ (emp.rewardCount || 0) === 0 ? 'No rewards yet' : 'Click to view all rewards' }}"
+                  matTooltipPosition="above">
+                  <span class="stat-val reward-val">{{ emp.rewardCount  || 0 }}</span>
+                </button>
+                <span class="stat-lbl"> Awards</span>
               </div>
               <div class="stat-divider"></div>
               <div class="stat">

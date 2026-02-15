@@ -78,7 +78,7 @@ export class RewardListComponent implements OnInit {
         this.rewardService.assignReward(result).subscribe({
           next: () => {
             this.loadRewards();
-            this.snackBar.open('🏆 Reward assigned!', 'Close', { duration: 3000 });
+            this.snackBar.open('Reward assigned!', 'Close', { duration: 3000 });
           },
           error: () => this.snackBar.open('Failed to assign reward', 'Close', { duration: 3000 })
         });
@@ -96,7 +96,7 @@ export class RewardListComponent implements OnInit {
         this.rewardService.updateReward(reward.id!, result).subscribe({
           next: () => {
             this.loadRewards();
-            this.snackBar.open('✅ Reward updated!', 'Close', { duration: 3000 });
+            this.snackBar.open('Reward updated!', 'Close', { duration: 3000 });
           },
           error: () => this.snackBar.open('Failed to update', 'Close', { duration: 3000 })
         });

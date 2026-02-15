@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
@@ -15,7 +15,8 @@ import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/models';
 import { AddEmployeeDialogComponent } from './add-employee.component';
 
-// ── Employee List Component ───────────────────────────────────────────────────
+import { EmployeeRewardsDialogComponent } from './employee-rewards-dialog.component'
+
 @Component({
   selector: 'app-employee-list',
   standalone: true,
@@ -74,7 +75,7 @@ export class EmployeeListComponent implements OnInit {
         this.employeeService.createEmployee(result).subscribe({
           next: () => {
             this.loadEmployees();
-            this.snackBar.open('✅ Employee added successfully!', 'Close', { duration: 3000 });
+            this.snackBar.open('Employee added successfully!', 'Close', { duration: 3000 });
           },
           error: (err) => {
             this.snackBar.open(err.error?.message || 'Failed to add employee', 'Close', { duration: 3000 });
@@ -94,7 +95,7 @@ export class EmployeeListComponent implements OnInit {
         this.employeeService.updateEmployee(emp.id!, result).subscribe({
           next: () => {
             this.loadEmployees();
-            this.snackBar.open('✅ Employee updated!', 'Close', { duration: 3000 });
+            this.snackBar.open('Employee updated!', 'Close', { duration: 3000 });
           },
           error: () => this.snackBar.open('Failed to update', 'Close', { duration: 3000 })
         });
@@ -112,6 +113,19 @@ export class EmployeeListComponent implements OnInit {
         error: () => this.snackBar.open('Failed to delete', 'Close', { duration: 3000 })
       });
     }
+  }
+
+  openRewardsDialog(emp: Employee): void {
+    this.dialog.open(EmployeeRewardsDialogComponent, {
+      data: {
+        employeeId:   emp.id,
+        employeeName: emp.name,
+        totalPoints:  emp.totalPoints || 0
+      },
+      width:     '560px',
+      maxHeight: '80vh',       
+      panelClass: 'rewards-dialog-panel'
+    });
   }
 
   getGradient(name: string): string {

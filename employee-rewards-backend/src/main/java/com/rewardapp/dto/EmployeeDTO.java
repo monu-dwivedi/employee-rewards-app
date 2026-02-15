@@ -23,7 +23,6 @@ public class EmployeeDTO {
     private String email;
 
     private String jobTitle;
-    private String profileImageUrl;
     private int rewardCount;
     private int totalPoints;
 }

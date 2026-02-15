@@ -38,3 +38,34 @@
     .empty-state { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #bbb; }
     .empty-icon { font-size: 64px; height: 64px; width: 64px; color: #ddd; display: block; margin: 0 auto 16px; }
   
+
+    .reward-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.reward-link:disabled {
+  cursor: default;
+}
+
+/* The orange underlined number */
+.reward-val {
+  color: #f5a623;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s, opacity 0.15s;
+}
+
+.reward-link:hover:not(:disabled) .reward-val {
+  color: #e0911a;
+  opacity: 0.85;
+}
+
+.reward-link:disabled .reward-val {
+  color: #1a1a2e;    /* no-reward employees stay in the default dark colour */
+  text-decoration: none;
+  cursor: default;
+}

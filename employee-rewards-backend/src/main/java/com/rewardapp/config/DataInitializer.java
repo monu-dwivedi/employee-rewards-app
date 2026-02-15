@@ -4,9 +4,12 @@ import com.rewardapp.entity.Employee;
 import com.rewardapp.entity.Reward;
 import com.rewardapp.repository.EmployeeRepository;
 import com.rewardapp.repository.RewardRepository;
+import com.rewardapp.service.EmployeeService;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,13 +20,13 @@ import java.time.LocalDate;
 @Configuration
 @RequiredArgsConstructor
 @Builder
+@Slf4j
 public class DataInitializer {
 
     @Bean
     @Profile("!test")
-    public CommandLineRunner initData(EmployeeRepository employeeRepo, RewardRepository rewardRepo) {
+    CommandLineRunner initData(EmployeeRepository employeeRepo, RewardRepository rewardRepo) {
         return args -> {
-        	System.out.println(employeeRepo.count());
             if (employeeRepo.count() == 0) {
                 // Sample Employees
                 Employee e1 = employeeRepo.save(Employee.builder()
@@ -60,7 +63,7 @@ public class DataInitializer {
                         .points(600).description("Exceeded sales targets by 150%").build());
 
             }
-            System.out.println("load successfully");
+            log.info("Test data initialized");
         };
     }
 }

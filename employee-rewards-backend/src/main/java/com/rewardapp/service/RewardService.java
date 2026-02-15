@@ -7,6 +7,7 @@ import com.rewardapp.exception.ResourceNotFoundException;
 import com.rewardapp.repository.EmployeeRepository;
 import com.rewardapp.repository.RewardRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class RewardService {
 
     private final RewardRepository rewardRepository;
@@ -32,20 +34,29 @@ public class RewardService {
 
 
     public List<RewardDTO> getAllRewards() {
-        return rewardRepository.findAllWithEmployee()
+        log.info("Fetching all rewards");
+        List<RewardDTO> rewards = rewardRepository.findAllWithEmployee()
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+        log.info("Found {} rewards", rewards.size());
+        return rewards;
     }
 
     public RewardDTO getRewardById(Long id) {
+        log.info("Fetching reward with id: {}", id);
         Reward reward = rewardRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Reward", id));
+                .orElseThrow(() -> {
+                    log.error("Reward not found with id: {}", id);
+                    return new ResourceNotFoundException("Reward", id);
+                });
         return toDTO(reward);
     }
 
     public List<RewardDTO> getRewardsByEmployee(Long employeeId) {
+        log.info("Fetching rewards for employee id: {}", employeeId);
         if (!employeeRepository.existsById(employeeId)) {
+            log.error("Employee not found with id: {}", employeeId);
             throw new ResourceNotFoundException("Employee", employeeId);
         }
         return rewardRepository.findByEmployeeIdWithEmployee(employeeId)
@@ -55,8 +66,12 @@ public class RewardService {
     }
 
     public RewardDTO assignReward(RewardDTO dto) {
+        log.info("Assigning reward '{}' to employee id: {}", dto.getRewardName(), dto.getEmployeeId());
         Employee employee = employeeRepository.findById(dto.getEmployeeId())
-                .orElseThrow(() -> new ResourceNotFoundException("Employee", dto.getEmployeeId()));
+                .orElseThrow(() -> {
+                    log.error("Employee not found with id: {}", dto.getEmployeeId());
+                    return new ResourceNotFoundException("Employee", dto.getEmployeeId());
+                });
 
         Reward reward = Reward.builder()
                 .employee(employee)
@@ -68,16 +83,25 @@ public class RewardService {
                 .build();
 
         Reward saved = rewardRepository.save(reward);
+        log.info("Reward assigned successfully with id: {}", saved.getId());
         return toDTO(saved);
     }
 
     public RewardDTO updateReward(Long id, RewardDTO dto) {
+        log.info("Updating reward with id: {}", id);
         Reward reward = rewardRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Reward", id));
+                .orElseThrow(() -> {
+                    log.error("Reward not found with id: {}", id);
+                    return new ResourceNotFoundException("Reward", id);
+                });
 
         if (!reward.getEmployee().getId().equals(dto.getEmployeeId())) {
+            log.info("Updating employee for reward id: {} to employee id: {}", id, dto.getEmployeeId());
             Employee newEmployee = employeeRepository.findById(dto.getEmployeeId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Employee", dto.getEmployeeId()));
+                    .orElseThrow(() -> {
+                        log.error("Employee not found with id: {}", dto.getEmployeeId());
+                        return new ResourceNotFoundException("Employee", dto.getEmployeeId());
+                    });
             reward.setEmployee(newEmployee);
         }
 
@@ -88,14 +112,18 @@ public class RewardService {
         reward.setDescription(dto.getDescription());
 
         Reward updated = rewardRepository.save(reward);
+        log.info("Reward updated successfully with id: {}", updated.getId());
         return toDTO(updated);
     }
 
     public void deleteReward(Long id) {
+        log.info("Deleting reward with id: {}", id);
         if (!rewardRepository.existsById(id)) {
+            log.error("Reward not found with id: {}", id);
             throw new ResourceNotFoundException("Reward", id);
         }
         rewardRepository.deleteById(id);
+        log.info("Reward deleted successfully with id: {}", id);
     }
 
     public List<String> getAllRewardTypes() {

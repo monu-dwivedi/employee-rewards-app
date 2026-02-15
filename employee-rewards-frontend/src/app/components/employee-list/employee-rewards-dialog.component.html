@@ -1,0 +1,100 @@
+<div class="dialog-wrapper">
+
+      <!-- ── Header ─────────────────────────────────────────── -->
+      <div class="dialog-header">
+        <div class="header-left">
+          <div class="emp-avatar">{{ data.employeeName.charAt(0).toUpperCase() }}</div>
+          <div class="header-info">
+            <h2 class="dialog-title">{{ data.employeeName }}</h2>
+            <span class="dialog-sub">Rewards &amp; Recognitions</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="pts-badge">
+            <mat-icon>stars</mat-icon>
+            {{ data.totalPoints }} pts
+          </div>
+          <button mat-icon-button (click)="close()" class="close-btn" aria-label="Close">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Reward count summary ───────────────────────────── -->
+      <div class="count-bar">
+        <mat-icon class="count-icon">emoji_events</mat-icon>
+        <span>
+          Showing <strong>{{ visibleRewards.length }}</strong>
+          of <strong>{{ allRewards.length }}</strong> rewards
+        </span>
+      </div>
+
+      <!-- ── Scrollable list ────────────────────────────────── -->
+      <div
+        class="scroll-body"
+        #scrollContainer
+        (scroll)="onScroll($event)">
+
+        <!-- Initial loading -->
+        <div *ngIf="initialLoading" class="center-spinner">
+          <mat-spinner diameter="44"></mat-spinner>
+          <p>Loading rewards…</p>
+        </div>
+
+        <!-- No rewards at all -->
+        <div *ngIf="!initialLoading && allRewards.length === 0" class="empty-state">
+          <mat-icon class="empty-icon">star_border</mat-icon>
+          <p>No rewards assigned yet</p>
+        </div>
+
+        <!-- Reward cards -->
+        <div *ngIf="!initialLoading && allRewards.length > 0">
+          <div class="reward-card" *ngFor="let r of visibleRewards; let i = index">
+
+            <div class="card-left">
+              <div class="reward-num">{{ i + 1 }}</div>
+              <div class="reward-icon-box" [style.background]="typeGradient(r.rewardType)">
+                <mat-icon class="rw-icon">emoji_events</mat-icon>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <span class="reward-name">{{ r.rewardName }}</span>
+              <div class="reward-meta">
+                <span class="type-chip" [style.background]="typeColor(r.rewardType)">
+                  {{ r.rewardType || 'General' }}
+                </span>
+                <span class="meta-date">
+                  <mat-icon class="tiny-icon">event</mat-icon>
+                  {{ r.dateAwarded | date:'MMM d, yyyy' }}
+                </span>
+              </div>
+              <p class="reward-desc" *ngIf="r.description">{{ r.description }}</p>
+            </div>
+
+            <div class="card-right">
+              <div class="pts-pill">
+                <mat-icon class="pts-star">stars</mat-icon>
+                <span class="pts-val">{{ r.points || 0 }}</span>
+                <span class="pts-lbl">pts</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Load-more spinner (shows while fetching next batch) -->
+          <div *ngIf="loadingMore" class="load-more-spinner">
+            <mat-spinner diameter="28"></mat-spinner>
+            <span>Loading more…</span>
+          </div>
+
+          <!-- End of list message -->
+          <div *ngIf="!loadingMore && allLoaded && allRewards.length > PAGE_SIZE" class="end-msg">
+            <mat-icon>check_circle</mat-icon> All {{ allRewards.length }} rewards loaded
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  

@@ -15,7 +15,7 @@
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Email Address</mat-label>
             <mat-icon matPrefix>email</mat-icon>
-            <input matInput formControlName="email" placeholder="e.g. john@company.com">
+            <input matInput formControlName="email" placeholder="e.g. monu@company.com">
             <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
             <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email format</mat-error>
           </mat-form-field>

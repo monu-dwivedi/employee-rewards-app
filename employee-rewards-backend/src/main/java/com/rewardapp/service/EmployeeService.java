@@ -7,6 +7,7 @@ import com.rewardapp.exception.ResourceNotFoundException;
 import com.rewardapp.repository.EmployeeRepository;
 import com.rewardapp.repository.RewardRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
@@ -30,20 +32,29 @@ public class EmployeeService {
 
 
     public List<EmployeeDTO> getAllEmployees() {
-        return employeeRepository.findAll()
+        log.info("Fetching all employees");
+        List<EmployeeDTO> employees = employeeRepository.findAll()
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+        log.info("Found {} employees", employees.size());
+        return employees;
     }
 
     public EmployeeDTO getEmployeeById(Long id) {
+        log.info("Fetching employee with id: {}", id);
         Employee employee = employeeRepository.findByIdWithRewards(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee", id));
+                .orElseThrow(() -> {
+                    log.error("Employee not found with id: {}", id);
+                    return new ResourceNotFoundException("Employee", id);
+                });
         return toDTO(employee);
     }
 
     public EmployeeDTO createEmployee(EmployeeDTO dto) {
+        log.info("Creating new employee with email: {}", dto.getEmail());
         if (employeeRepository.existsByEmail(dto.getEmail())) {
+            log.warn("Employee with email {} already exists", dto.getEmail());
             throw new DuplicateResourceException("Employee with email " + dto.getEmail() + " already exists");
         }
         Employee employee = Employee.builder()
@@ -53,15 +64,21 @@ public class EmployeeService {
                 .jobTitle(dto.getJobTitle())
                 .build();
         Employee saved = employeeRepository.save(employee);
+        log.info("Employee created successfully with id: {}", saved.getId());
         return toDTO(saved);
     }
 
     public EmployeeDTO updateEmployee(Long id, EmployeeDTO dto) {
+        log.info("Updating employee with id: {}", id);
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee", id));
+                .orElseThrow(() -> {
+                    log.error("Employee not found with id: {}", id);
+                    return new ResourceNotFoundException("Employee", id);
+                });
 
         // Check email uniqueness if changed
         if (!employee.getEmail().equals(dto.getEmail()) && employeeRepository.existsByEmail(dto.getEmail())) {
+            log.warn("Email {} is already taken by another employee", dto.getEmail());
             throw new DuplicateResourceException("Employee with email " + dto.getEmail() + " already exists");
         }
 
@@ -71,24 +88,32 @@ public class EmployeeService {
         employee.setJobTitle(dto.getJobTitle());
 
         Employee updated = employeeRepository.save(employee);
+        log.info("Employee updated successfully with id: {}", updated.getId());
         return toDTO(updated);
     }
 
     public void deleteEmployee(Long id) {
+        log.info("Deleting employee with id: {}", id);
         if (!employeeRepository.existsById(id)) {
+            log.error("Employee not found with id: {}", id);
             throw new ResourceNotFoundException("Employee", id);
         }
         employeeRepository.deleteById(id);
+        log.info("Employee deleted successfully with id: {}", id);
     }
 
     public List<EmployeeDTO> getEmployeesByDepartment(String department) {
-        return employeeRepository.findByDepartmentIgnoreCase(department)
+        log.info("Fetching employees in department: {}", department);
+        List<EmployeeDTO> employees = employeeRepository.findByDepartmentIgnoreCase(department)
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+        log.info("Found {} employees in department {}", employees.size(), department);
+        return employees;
     }
 
     public List<EmployeeDTO> searchEmployees(String name) {
+        log.info("Searching employees with name containing: {}", name);
         return employeeRepository.findByNameContainingIgnoreCase(name)
                 .stream()
                 .map(this::toDTO)
@@ -96,6 +121,7 @@ public class EmployeeService {
     }
 
     public List<String> getAllDepartments() {
+        log.info("Fetching all departments");
         return employeeRepository.findAllDepartments();
     }
 

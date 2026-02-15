@@ -40,3 +40,17 @@ body {
 .text-center { text-align: center; }
 .mt-16 { margin-top: 16px; }
 .mb-16 { margin-bottom: 16px; }
+
+.rewards-dialog-panel .mat-mdc-dialog-container {
+  border-radius: 16px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.rewards-dialog-panel .mdc-dialog__surface {
+  border-radius: 16px !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
