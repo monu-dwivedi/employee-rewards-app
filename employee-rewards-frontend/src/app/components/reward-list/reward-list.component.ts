@@ -15,7 +15,7 @@ import { RewardService } from '../../services/reward.service';
 import { Reward } from '../../models/models';
 import { AssignRewardDialogComponent } from './assign-reward.component';
 
-// ── Reward List Component ─────────────────────────────────────────────────────
+// ----- Reward List Component ---------------------------------------------------
 @Component({
   selector: 'app-reward-list',
   standalone: true,

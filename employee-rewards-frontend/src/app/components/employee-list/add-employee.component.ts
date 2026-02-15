@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Employee } from '../../models/models';
 
-// ── Dialog Component ──────────────────────────────────────────────────────────
+// --- Dialog Component ---------------------------------------------------
 @Component({
   selector: 'app-add-employee-dialog',
   standalone: true,

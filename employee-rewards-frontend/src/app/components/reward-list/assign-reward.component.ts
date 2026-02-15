@@ -14,7 +14,7 @@ import { EmployeeService } from '../../services/employee.service';
 import { Reward, Employee } from '../../models/models';
 import { forkJoin } from 'rxjs';
 
-// ── Assign Reward Dialog ──────────────────────────────────────────────────────
+// --- Assign Reward Dialog ---------------------------------------------------
 @Component({
   selector: 'app-assign-reward-dialog',
   standalone: true,
